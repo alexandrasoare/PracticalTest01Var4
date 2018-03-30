@@ -1,5 +1,6 @@
 package practicaltest01var04.eim.systems.cs.pub.ro.practicaltest01var04;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,8 @@ public class PracticalTest01Var04MainActivity extends AppCompatActivity {
 
     private int totalClicks = 0;
 
+    private final static int SECONDARY_ACTIVITY_REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +33,7 @@ public class PracticalTest01Var04MainActivity extends AppCompatActivity {
         centerButton = (Button) findViewById(R.id.center);
         bottomLeftButton = (Button) findViewById(R.id.bottom_left);
         bottomRigntButton = (Button) findViewById(R.id.bottom_right);
+        navigateButton = (Button) findViewById(R.id.navigate_button);
 
         textView = (TextView) findViewById(R.id.text_view);
         textViewNumber = (TextView) findViewById(R.id.text_view_number);
@@ -100,6 +104,15 @@ public class PracticalTest01Var04MainActivity extends AppCompatActivity {
                 textViewNumber.setText(String.valueOf(totalClicks));
             }
         });
+
+        navigateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PracticalTest01Var04MainActivity.this, PracticalTest01Var04SecondaryActivity.class);
+                intent.putExtra("text", textView.getText().toString());
+                startActivityForResult(intent, SECONDARY_ACTIVITY_REQUEST_CODE);
+            }
+        });
     }
 
     @Override
@@ -116,5 +129,12 @@ public class PracticalTest01Var04MainActivity extends AppCompatActivity {
             textViewNumber.setText(String.valueOf(totalClicks));
         }
         Toast.makeText(this, textViewNumber.getText().toString(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == SECONDARY_ACTIVITY_REQUEST_CODE) {
+            Toast.makeText(this, "Result : " + resultCode, Toast.LENGTH_LONG).show();
+        }
     }
 }
